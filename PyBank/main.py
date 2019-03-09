@@ -53,4 +53,4 @@ with open(csvpath,newline="") as cvsfile:
         text.write("Greatest Decrease in Profits: %s"%months[decreaseIndex])
         text.write(" %s\n"%greatestDecrease)
 
-# #Printing and exporting text file with results
+
