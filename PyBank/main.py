@@ -1,34 +1,56 @@
-# First we'll import the os module
-# This will allow us to create file paths across operating systems
-import os
-
-# Module for reading CSV files
+#Import csv module
 import csv
 
-csvpath = os.path.join('C:', 'Users', 'Miguel','Desktop','GitHomework','python-challenge','PyBank','budget_data.csv')
+#Assigning filepaths to be used
+csvpath = "budget_data.csv"
+outputPath = "results.txt"
 
-print(csvpath)
+#Reading file and printing to teminal
+with open(csvpath,newline="") as cvsfile:
+    csvreader = csv.reader(cvsfile,delimiter = ',')
+    #Skip the header row
+    next(csvreader)
 
-# # # Method 1: Plain Reading of CSV files
-# # with open(csvpath, 'r') as file_handler:
-# #     lines = file_handler.read()
-# #     print(lines)
-# #     print(type(lines))
+    #Initializing lists that will take values of months and profitLoss
+    months = []
+    profitLoss = []
+    for row in csvreader:
+
+        #Reading each row of cvs and appending values to lists
+        months.append(row[0])
+        profitLoss.append(int(row[1]))
+
+    #Calculating and printing required values
+    totalMonths = len(months)   
+    print(f"Total months: {totalMonths}")
+
+    netProfitLoss = sum(profitLoss)
+    print(f"Total: {netProfitLoss}")
+
+    averageProfitLoss = netProfitLoss/len(profitLoss)
+    print(f"Average Change: {round(averageProfitLoss,2)}")
+
+    greatestIncrease = max(profitLoss)
+    increaseIndex = profitLoss.index(greatestIncrease)
+    print(f"Greatest Increase in Profits: {months[increaseIndex]} {greatestIncrease}")
 
 
-# # Method 2: Improved Reading using CSV module
+    greatestDecrease = min(profitLoss)
+    decreaseIndex = profitLoss.index(greatestDecrease)
+    print(f"Greatest Decrease in Profits: {months[decreaseIndex]} {greatestDecrease}")
 
-# with open(csvpath, newline='') as csvfile:
+    # Open text file and write results
+    with open(outputPath, 'w') as text:
+        text.write("Total Months: %s\n"%totalMonths)
 
-#     # CSV reader specifies delimiter and variable that holds contents
-#     csvreader = csv.reader(csvfile, delimiter=',')
+        text.write("Total: %s\n"%netProfitLoss)
 
-#     print(csvreader)
+        text.write("Average Change: %s\n"%round(averageProfitLoss,2))
 
-#     # Read the header row first (skip this step if there is now header)
-#     csv_header = next(csvreader)
-#     print(f"CSV Header: {csv_header}")
+        text.write("Greatest Increase in Profits: %s"%months[increaseIndex])
+        text.write(" %s\n"%greatestIncrease)
 
-#     # Read each row of data after the header
-#     for row in csvreader:
-#         print(row)
+        text.write("Greatest Decrease in Profits: %s"%months[decreaseIndex])
+        text.write(" %s\n"%greatestDecrease)
+
+# #Printing and exporting text file with results
